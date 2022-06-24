@@ -3,37 +3,64 @@
 #include <string.h>
 
 
+
+struct Sample{
+
+	int a;
+	int b;
+	int c;
+};
+
+int ssum(struct Sample* samp){
+	int sum = samp->a + samp->b + samp->c;
+	return sum; 
+}
+
 int main(void){
 
 	FILE* fptr;
 	char buff[64];
-
 	int counter = 0;
-	
-	int depth_a;
-	int depth_b;
-	int depth_c;
 
-	fptr = fopen("./data.txt", "r");
+	fptr = fopen("../data.txt", "r");
 
     if (NULL == fptr){
     	printf("unable to read file");
     	exit(1);
-    }; 
+    };
 
-    while(fgets(buff,64,fptr) != NULL){
+	int components[3];
+	
+	int i = 0;
+	while(fgets(buff ,64, fptr) != NULL && i < 3){
+		int component = atoi(buff);
+		components[i] = component;
+		i += 1;
+	}
+	struct Sample A;
+	A.a = components[0]; A.b = components[1]; A.c = components[2];
 
-    	depth = atoi(buff);
+    while(!feof(fptr)){
 
+		int B_c;
+		if(fgets(buff,16,fptr ) != NULL){
 
-    	if (depth > prev_depth && prev_depth != 0){
-		counter += 1;
+		B_c = atoi(buff);
+		} else {
+			
+			break; 
 		}
 
-		prev_depth = depth;
-    }
+		struct Sample B;
+		B.a = A.b; B.b = A.c; B.c = B_c;
 
+		if(ssum(&A) < ssum(&B)) { counter += 1;}
+
+		A = B;
+
+	}	
     printf("%i\n", counter);
 
+	fclose(fptr);
 	return 0;
 }

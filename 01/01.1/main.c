@@ -11,7 +11,7 @@ int main(void){
 	int prev_depth = 0;
 	int depth;
 
-	fptr = fopen("./data.txt", "r");
+	fptr = fopen("../data.txt", "r");
 
     if (NULL == fptr){
     	printf("unable to read file");
